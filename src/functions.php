@@ -151,6 +151,7 @@ function weakClosure(\Closure $closure): \Closure
     $useBindTo = !$scope || $that::class !== $scope->name || $scope->isInternal();
 
     $methodName = $reflection->getShortName();
+    var_dump($methodName);
     if (!\str_starts_with($methodName, '{closure')) {
         // Closure from first-class callable or \Closure::fromCallable(), declare an anonymous closure to rebind.
         /** @psalm-suppress InvalidScope Closure is bound before being invoked. */
