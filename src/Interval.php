@@ -10,7 +10,7 @@ use Revolt\EventLoop;
  */
 final class Interval
 {
-    private readonly string $watcher;
+    private readonly string $callbackId;
 
     /**
      * @param float $interval Invoke the function every $interval seconds.
@@ -20,16 +20,16 @@ final class Interval
      */
     public function __construct(float $interval, \Closure $closure, bool $reference = true)
     {
-        $this->watcher = EventLoop::repeat($interval, $closure);
+        $this->callbackId = EventLoop::repeat($interval, $closure);
 
         if (!$reference) {
-            EventLoop::unreference($this->watcher);
+            EventLoop::unreference($this->callbackId);
         }
     }
 
     public function __destruct()
     {
-        EventLoop::cancel($this->watcher);
+        EventLoop::cancel($this->callbackId);
     }
 
     /**
@@ -37,7 +37,7 @@ final class Interval
      */
     public function isReferenced(): bool
     {
-        return EventLoop::isReferenced($this->watcher);
+        return EventLoop::isReferenced($this->callbackId);
     }
 
     /**
@@ -47,7 +47,7 @@ final class Interval
      */
     public function reference(): self
     {
-        EventLoop::reference($this->watcher);
+        EventLoop::reference($this->callbackId);
 
         return $this;
     }
@@ -59,7 +59,7 @@ final class Interval
      */
     public function unreference(): self
     {
-        EventLoop::unreference($this->watcher);
+        EventLoop::unreference($this->callbackId);
 
         return $this;
     }
@@ -69,7 +69,7 @@ final class Interval
      */
     public function isEnabled(): bool
     {
-        return EventLoop::isEnabled($this->watcher);
+        return EventLoop::isEnabled($this->callbackId);
     }
 
     /**
@@ -79,7 +79,7 @@ final class Interval
      */
     public function enable(): self
     {
-        EventLoop::enable($this->watcher);
+        EventLoop::enable($this->callbackId);
 
         return $this;
     }
@@ -91,7 +91,7 @@ final class Interval
      */
     public function disable(): self
     {
-        EventLoop::disable($this->watcher);
+        EventLoop::disable($this->callbackId);
 
         return $this;
     }
